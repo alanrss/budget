@@ -242,6 +242,42 @@ function parseCSV(line){
   result.push(cur);
   return result;
 }
+// ...tu código existente
+
+const weeks = [];
+const weeksList = document.getElementById('weeksList');
+const addWeekBtn = document.getElementById('addWeekBtn');
+const newWeekStart = document.getElementById('newWeekStart');
+
+addWeekBtn.addEventListener('click', () => {
+  const weekStart = newWeekStart.value;
+  if (weekStart && !weeks.includes(weekStart)) {
+    weeks.push(weekStart);
+    renderWeeks();
+  }
+});
+
+function renderWeeks() {
+  weeksList.innerHTML = '';
+  weeks.forEach((week, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'week-item';
+    btn.textContent = `Semana desde ${week}`;
+    btn.onclick = () => selectWeek(i);
+    weeksList.appendChild(btn);
+  });
+}
+
+function selectWeek(index) {
+  // Aquí puedes cargar los datos de esa semana o cambiar el periodo
+  document.querySelectorAll('.week-item').forEach((el, i) => {
+    el.classList.toggle('selected', i === index);
+  });
+  // Por ejemplo, puedes actualizar el periodoStart:
+  document.getElementById('periodStart').value = weeks[index];
+}
+
+// ...el resto de tu código
 
 // Events wiring
 $('#addRowBtn').addEventListener('click', ()=>{ addRow(); save(); });
