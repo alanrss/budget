@@ -74,6 +74,129 @@ function renderAll(){
   $('#currency').value = state.currency;
   $('#budget').value = state.budget || '';
   $('#quickNote').value = state.note || '';
+  // --- NUEVA LÓGICA DE SEMANAS GUARDADAS ---
+
+let semanasGuardadas = []; // Array de semanas completas
+
+const weeksList = document.getElementById('weeksList');
+const addWeekBtn = document.getElementById('addWeekBtn');
+const newWeekStart = document.getElementById('newWeekStart');
+const guardarSemanaBtn = document.getElementById('guardarSemanaBtn');
+
+// 1. Guardar todas las semanas en localStorage
+function guardarTodasLasSemanas() {
+  localStorage.setItem('semanasGuardadas', JSON.stringify(semanasGuardadas));
+}
+// 2. Cargar todas las semanas de localStorage
+function cargarTodasLasSemanas() {
+  const raw = localStorage.getItem('semanasGuardadas');
+  semanasGuardadas = raw ? JSON.parse(raw) : [];
+}
+
+// 3. Guardar semana actual con todos sus datos
+function guardarSemanaActual() {
+  const semana = {
+    id: periodKey(state.periodStart, 'week'),
+    inicio: toInputDate(state.periodStart),
+    currency: state.currency,
+    budget: state.budget,
+    note: state.note,
+    entries: getEntriesFromDOM()
+  };
+  // Si ya existe, reemplázala
+  const idx = semanasGuardadas.findIndex(w => w.id === semana.id);
+  if (idx >= 0) semanasGuardadas[idx] = semana;
+  else semanasGuardadas.push(semana);
+  guardarTodasLasSemanas();
+  renderWeeks();
+  alert('¡Semana guardada!');
+}
+
+// 4. Renderizar lista de semanas guardadas
+function renderWeeks() {
+  cargarTodasLasSemanas();
+  weeksList.innerHTML = '';
+  semanasGuardadas.forEach((semana, i) => {
+    const wrap = document.createElement('div');
+    wrap.style.display = 'flex';
+    wrap.style.alignItems = 'center';
+    wrap.style.gap = '4px';
+
+    const btn = document.createElement('button');
+    btn.className = 'week-item';
+    btn.textContent = `Semana desde ${semana.inicio}`;
+    btn.onclick = () => cargarSemanaGuardada(semana.id);
+    wrap.appendChild(btn);
+
+    // Botón eliminar
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '🗑';
+    delBtn.className = 'danger';
+    delBtn.style.padding = '4px 8px';
+    delBtn.title = 'Eliminar semana';
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
+      if (confirm('¿Seguro que quieres eliminar esta semana?')) {
+        semanasGuardadas.splice(i, 1);
+        guardarTodasLasSemanas();
+        renderWeeks();
+      }
+    };
+    wrap.appendChild(delBtn);
+
+    weeksList.appendChild(wrap);
+  });
+}
+
+// 5. Cargar los datos de una semana guardada
+function cargarSemanaGuardada(id) {
+  const semana = semanasGuardadas.find(w => w.id === id);
+  if (semana) {
+    state.periodStart = new Date(semana.inicio);
+    state.currency = semana.currency;
+    state.budget = semana.budget;
+    state.note = semana.note;
+    state.entries = semana.entries || [];
+    state.type = 'week';
+    renderAll();
+    // Marcar como seleccionada
+    document.querySelectorAll('.week-item').forEach(el => el.classList.remove('selected'));
+    const btn = Array.from(document.querySelectorAll('.week-item')).find(b => b.textContent.includes(semana.inicio));
+    if (btn) btn.classList.add('selected');
+  }
+}
+
+// 6. Agregar nuevas semanas (solo en la lista, no en el array de guardadas)
+addWeekBtn.addEventListener('click', () => {
+  const weekStart = newWeekStart.value;
+  if (!weekStart) {
+    alert('Selecciona una fecha de inicio para la semana');
+    return;
+  }
+  // Si ya existe en semanas guardadas, la selecciona
+  const yaExiste = semanasGuardadas.some(w => w.inicio === weekStart);
+  if (yaExiste) {
+    cargarSemanaGuardada(periodKey(weekStart, 'week'));
+    return;
+  }
+  // Si no existe, crea una nueva semana vacía y la guarda
+  state.periodStart = new Date(weekStart);
+  state.type = 'week';
+  state.currency = 'USD';
+  state.budget = 0;
+  state.note = '';
+  state.entries = [];
+  renderAll();
+  guardarSemanaActual();
+});
+
+// 7. Guardar semana actual al hacer click en el botón
+guardarSemanaBtn.addEventListener('click', guardarSemanaActual);
+
+// 8. Renderizar semanas guardadas al iniciar
+(function(){
+  renderWeeks();
+})();
 
   // Period label
   let label;
