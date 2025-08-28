@@ -20,14 +20,16 @@
         <button id="clearBtn" class="danger">🗑 Clear Period</button>
       </div>
     </div>
- 
-<div style="margin-top:8px">
-  <input type="date" id="newWeekStart" />
-  <button id="addWeekBtn">+ Agregar Semana</button>
-  <button id="guardarSemanaBtn">💾 Guardar semana</button>
+    <section class="card weeks" aria-label="Gestión de Semanas">
+  <h3>Mis Semanas</h3>
+  <div id="weeksList" style="display:flex; gap:8px; flex-wrap:wrap"></div>
+  <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+    <input type="date" id="newWeekStart" />
     <button id="addWeekBtn">+ Agregar Semana</button>
+    <button id="guardarSemanaBtn">💾 Guardar semana</button>
   </div>
 </section>
+ 
 
     <section class="card controls" aria-label="Period and Budget Controls">
       <div>
