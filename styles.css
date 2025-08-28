@@ -1,0 +1,64 @@
+:root{
+  --bg:#0f172a;
+  --panel:#0b1229;
+  --card:#111a38;
+  --muted:#94a3b8;
+  --text:#e5e7eb;
+  --brand:#7c3aed;
+  --brand-2:#22c55e;
+  --accent:#38bdf8;
+  --danger:#ef4444;
+  --warning:#f59e0b;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(1200px 800px at 80% -100px, rgba(124,58,237,.25), transparent 60%),
+             radial-gradient(900px 600px at -20% 20%, rgba(56,189,248,.18), transparent 60%), var(--bg);
+     color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;}
+.container{max-width:1100px;margin:32px auto;padding:0 16px}
+.header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.title{font-size: clamp(1.4rem, 1.1rem + 1.5vw, 2rem); font-weight:800; letter-spacing:.3px; display:flex; align-items:center; gap:10px}
+.title .badge{background:linear-gradient(135deg, var(--brand), var(--accent)); padding:4px 10px; border-radius:999px; font-size:.8rem; font-weight:700}
+
+.toolbar{display:flex;flex-wrap:wrap; gap:10px}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.controls{display:grid; grid-template-columns: repeat(5, minmax(160px, 1fr)); gap:12px}
+label{font-size:.82rem; color:var(--muted); display:block; margin-bottom:6px}
+input, select, button{width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.1); background:#0b1229; color:var(--text)}
+input::placeholder{color:#94a3b8}
+button{cursor:pointer; border:none; background:linear-gradient(135deg, rgba(124,58,237,.95), rgba(56,189,248,.95)); font-weight:700}
+button.secondary{background:#0b1229; border:1px solid rgba(255,255,255,.12)}
+button.danger{background: linear-gradient(135deg, var(--danger), #f97316)}
+
+.table-wrap{margin-top:16px}
+table{width:100%; border-collapse:separate; border-spacing:0 10px}
+thead th{font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#a6b0c3; padding:6px 10px}
+tbody tr{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08)}
+tbody tr td{padding:8px}
+tbody tr td:first-child{border-top-left-radius:12px;border-bottom-left-radius:12px}
+tbody tr td:last-child{border-top-right-radius:12px;border-bottom-right-radius:12px}
+tbody input, tbody select{width:100%; background:#0b1229; border:1px solid rgba(255,255,255,.09)}
+
+.summary{display:grid; grid-template-columns: 1.1fr 1.2fr; gap:16px; margin-top:18px}
+.sum-item{display:flex; align-items:center; gap:14px}
+.sum-item .dot{width:10px;height:10px;border-radius:50%}
+.stats{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+.kpi{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:14px}
+.kpi h3{margin:0; font-size:.9rem; color:#a6b0c3; font-weight:700}
+.kpi p{margin:6px 0 0 0; font-size:1.4rem; font-weight:800}
+
+.progress{height:14px; background:#0b1229; border-radius:999px; overflow:hidden; border:1px solid rgba(255,255,255,.12)}
+.progress > div{height:100%; width:0%; background:linear-gradient(90deg, var(--brand), var(--warning) 60%, var(--danger)); transition:width .3s ease}
+
+.donut{--p:0; width:140px; height:140px; border-radius:50%; background:conic-gradient(var(--brand) 0 var(--p), rgba(255,255,255,.08) var(--p) 360deg); position:relative}
+.donut::after{content:""; position:absolute; inset:12px; background:var(--panel); border-radius:50%; border:1px solid rgba(255,255,255,.06)}
+.donut-label{position:absolute; inset:0; display:grid; place-content:center; font-weight:800}
+
+.tips{font-size:.86rem; color:#a6b0c3}
+
+.footer{margin-top:28px; font-size:.8rem; color:#95a1b9; display:flex; justify-content:space-between; align-items:center}
+
+@media (max-width: 900px){
+  .controls{grid-template-columns: 1fr 1fr}
+  .summary{grid-template-columns:1fr}
+}

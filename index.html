@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spending Report (Weekly & Monthly)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="title"> Alan Spending budget <span class="badge">v2.0</span></div>
+      <div class="toolbar" role="toolbar" aria-label="Actions">
+        <button id="addRowBtn">+ Add Entry</button>
+        <button id="exportBtn" class="secondary">⬇️ Export CSV</button>
+        <label for="importCsv" style="display:flex;align-items:center;gap:8px" class="secondary">
+          <input id="importCsv" type="file" accept=".csv" style="display:none" />
+          <button id="importBtn" class="secondary">⬆️ Import CSV</button>
+        </label>
+        <button id="clearBtn" class="danger">🗑 Clear Period</button>
+      </div>
+    </div>
+
+    <section class="card controls" aria-label="Period and Budget Controls">
+      <div>
+        <label for="type">Report Type</label>
+        <select id="type">
+          <option value="week">Weekly</option>
+          <option value="month">Monthly</option>
+        </select>
+      </div>
+      <div>
+        <label for="periodStart">Start Date</label>
+        <input type="date" id="periodStart" />
+      </div>
+      <div>
+        <label for="currency">Currency</label>
+        <select id="currency">
+          <option value="USD" selected>USD $</option>
+          <option value="MXN">MXN $</option>
+          <option value="EUR">EUR €</option>
+        </select>
+      </div>
+      <div>
+        <label for="budget">Budget</label>
+        <input type="number" id="budget" min="0" step="0.01" placeholder="e.g. 80" />
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <div class="sum-item">
+          <div style="flex:1">
+            <div class="progress" title="Spending Progress">
+              <div id="progressBar"></div>
+            </div>
+          </div>
+          <div style="width:80px;text-align:right"><span id="progressPct">0%</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="table-wrap" aria-label="Spending Table">
+      <table id="spendTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Method</th>
+            <th>Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </section>
+
+    <section class="summary">
+      <div class="card stats">
+        <div class="kpi">
+          <h3>Total Spent</h3>
+          <p id="totalSpent">$0.00</p>
+        </div>
+        <div class="kpi">
+          <h3>Remaining</h3>
+          <p id="remaining">$0.00</p>
+        </div>
+        <div class="kpi">
+          <h3>Average/Day</h3>
+          <p id="avgPerDay">$0.00</p>
+        </div>
+        <div class="kpi">
+          <h3>Total Entries</h3>
+          <p id="entriesCount">0</p>
+        </div>
+      </div>
+      <div class="card" style="display:flex; align-items:center; gap:16px; justify-content:space-between">
+        <div style="display:flex; align-items:center; gap:14px">
+          <div class="donut" id="donut" style="--p:0deg">
+            <div class="donut-label" id="donutLabel">0%</div>
+          </div>
+          <div>
+            <div class="sum-item"><span class="dot" style="background:var(--brand)"></span> <span>Spent vs Budget</span></div>
+            <p class="tips">The ring shows the % of your budget used. Stay below 80% for good control ✅</p>
+          </div>
+        </div>
+        <div>
+          <label for="quickNote">Quick Note</label>
+          <input id="quickNote" placeholder="E.g. This month save on snacks" />
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <span>Made by Alan/Ai.</span>
+      <span id="periodLabel"></span>
+    </div>
+  </div>
+
+  <template id="rowTemplate">
+    <tr>
+      <td><select class="day"></select></td>
+      <td><input class="desc" placeholder="E.g. Sandwich" /></td>
+      <td>
+        <select class="cat">
+          <option value="Food">Food</option>
+          <option value="Transport">Transport</option>
+          <option value="School">School</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Health">Health</option>
+          <option value="Other">Other</option>
+        </select>
+      </td>
+      <td>
+        <select class="pay">
+          <option>Cash</option>
+          <option>Card</option>
+          <option>Transfer</option>
+        </select>
+      </td>
+      <td><input class="amt" type="number" step="0.01" min="0" placeholder="0.00" /></td>
+      <td style="width:40px"><button class="secondary" data-action="delete" title="Delete row">✖</button></td>
+    </tr>
+  </template>
+
+  <script src="main.js"></script>
+</body>
+</html>
